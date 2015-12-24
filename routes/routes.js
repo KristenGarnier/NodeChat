@@ -9,5 +9,14 @@ module.exports = (express, app) => {
         res.render('chatrooms', {title : 'Chatrooms'});
     });
 
+    router.get('/setcolor', (req, res, next) => {
+        req.session.favColor = 'Red';
+        res.send('setting favorite color...');
+    });
+
+    router.get('/getcolor', (req, res, next) => {
+        res.send(`Favourite color : ${req.session.favColor === undefined ? 'Not Found' : req.session.favColor}`);
+    });
+
     app.use('/', router);
 };
