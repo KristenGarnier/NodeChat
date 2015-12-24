@@ -7,16 +7,22 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "express": "4.2.0",
-    "hogan-express": "0.5.2",
-    "cookie-parser": "1.1.0",
-    "express-session": "1.2.0",
-    "connect-mongo": "0.8.2",
-    "mongoose": "4.1.9",
-    "passport": "0.2.0",
-    "passport-facebook": "1.0.3",
-    "socket.io": "0.9.17"
+    "express": "*",
+    "hogan-express": "*",
+    "cookie-parser": "*",
+    "express-session": "*",
+    "connect-mongo": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-facebook": "*",
+    "socket.io": "*"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.0",
+    "imports-loader": "^0.6.5",
+    "webpack": "^1.12.9"
+  }
 }
