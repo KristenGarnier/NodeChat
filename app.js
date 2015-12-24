@@ -26,12 +26,13 @@ if (env === 'developpement'){
         resave: true,
         saveUninitialized: true
     }));
-} else {
+}
+else {
     // Prod settings
     app.use(session({
         secret: config.sessionSecret,
         store: new ConnectMongo({
-            url: config.dbURL,
+            mongooseConnection:mongoose.connection,
             stringify: true
         }),
         resave: true,
@@ -39,9 +40,30 @@ if (env === 'developpement'){
     }));
 }
 
+/*const userSchema = {
+    username:String,
+    password:String,
+    fullname:String
+};
+
+const Person = mongoose.model('users', userSchema);
+
+let John = new Person({
+    username: "johndoe",
+    password: "hello",
+    fullname: "John Doe"
+
+});
+
+John.save((err) => {
+    if(!err){
+        console.log('done')
+    } else {
+        console.log(err);
+    }
+});*/
+
 require('./routes/routes')(express, app);
-
-
 app.listen(3000, ()=> {
     console.log('localhost:3000');
     console.log(`MODE : ${env}`);
