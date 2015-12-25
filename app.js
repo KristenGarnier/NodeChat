@@ -70,7 +70,18 @@ app.use(passport.session());
 
 require('./routes/routes')(express, app, passport);
 require('./auth/passportAuth')(passport, FacebookStrategy, config, mongoose);
-app.listen(3000, ()=> {
+
+/*app.listen(3000, ()=> {
+    console.log('localhost:3000');
+    console.log(`MODE : ${env}`);
+});*/
+app.set('port', process.env.PORT || 3000);
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
+
+require('./socket/socket')(io);
+
+server.listen(app.get('port'), () => {
     console.log('localhost:3000');
     console.log(`MODE : ${env}`);
 });
