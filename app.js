@@ -69,7 +69,7 @@ John.save((err) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./routes/routes')(express, app, passport, config);
+require('./routes/routes')(express, app, passport, config, rooms);
 require('./auth/passportAuth')(passport, FacebookStrategy, config, mongoose);
 
 /*app.listen(3000, ()=> {

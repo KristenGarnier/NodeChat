@@ -17,7 +17,7 @@
 		messages.on('connect', function(){
 			console.log('Connection Established !!');
 			messages.emit('joinroom', {room:roomNum, user:userName, userPic:userPic})
-		})
+		});
 
 		$(document).on('keyup', '.newmessage', function(e){
 			if(e.which === 13 && $(this).val()!=''){
