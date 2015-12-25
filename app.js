@@ -6,7 +6,9 @@ const express = require('express'),
     session = require('express-session'),
     mong = require('mongoose'),
     ConnectMongo = require('connect-mongo')(session),
-    config = require('./config/config');
+    config = require('./config/config'),
+    passport =require('passport'),
+    FacebookStrategy = require('passport-facebook').Strategy;
 
 //MONGOOSE CONFIG
 const mongoose = mong.connect(config.dbURL);
@@ -64,6 +66,7 @@ John.save((err) => {
 });*/
 
 require('./routes/routes')(express, app);
+require('./auth/passportAuth')(passport, FacebookStrategy, config, mongoose);
 app.listen(3000, ()=> {
     console.log('localhost:3000');
     console.log(`MODE : ${env}`);
