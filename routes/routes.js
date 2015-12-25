@@ -1,4 +1,4 @@
-module.exports = (express, app, passport) => {
+module.exports = (express, app, passport, config) => {
     const router = express.Router();
 
     const securePages = (req, res, next) => {
@@ -27,7 +27,7 @@ module.exports = (express, app, passport) => {
     });
 
     router.get('/chatrooms', securePages, ( req, res, next) => {
-        res.render('chatrooms', {title : 'Chatrooms', user:req.user});
+        res.render('chatrooms', {title : 'Chatrooms', user:req.user, config: config});
     });
 
     app.use('/', router);

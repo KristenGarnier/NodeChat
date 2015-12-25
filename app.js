@@ -8,7 +8,8 @@ const express = require('express'),
     ConnectMongo = require('connect-mongo')(session),
     config = require('./config/config'),
     passport =require('passport'),
-    FacebookStrategy = require('passport-facebook').Strategy;
+    FacebookStrategy = require('passport-facebook').Strategy,
+    rooms = [];
 
 //MONGOOSE CONFIG
 const mongoose = mong.connect(config.dbURL);
@@ -68,7 +69,7 @@ John.save((err) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./routes/routes')(express, app, passport);
+require('./routes/routes')(express, app, passport, config);
 require('./auth/passportAuth')(passport, FacebookStrategy, config, mongoose);
 
 /*app.listen(3000, ()=> {
@@ -77,9 +78,9 @@ require('./auth/passportAuth')(passport, FacebookStrategy, config, mongoose);
 });*/
 app.set('port', process.env.PORT || 3000);
 const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const io = require('socket.io')(server);
 
-require('./socket/socket')(io);
+require('./socket/socket')(io, rooms);
 
 server.listen(app.get('port'), () => {
     console.log('localhost:3000');

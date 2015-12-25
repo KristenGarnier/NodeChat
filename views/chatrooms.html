@@ -13,7 +13,7 @@
 
 		socket.on('connect', function(){
 			console.log('Connection Established !');
-		})
+		});
 
 		socket.on('roomupdate', function(data){
 			var procData = JSON.parse(data);
@@ -22,7 +22,7 @@
 				var str = '<a href="room/' + procData[i].room_number + '"><li>' + procData[i].room_name + '</li></a>';
 				$('.roomlist').prepend(str);
 			}
-		})
+		});
 
 
 
