@@ -1,12 +1,20 @@
-module.exports = (express, app) => {
+module.exports = (express, app, passport) => {
     const router = express.Router();
 
     router.get('/',( req, res, next) => {
         res.render('index', {title : 'welcole to CHATCAT'});
     });
 
-    router.get('/chatroom',( req, res, next) => {
-        res.render('chatrooms', {title : 'Chatrooms'});
+    router.get('/auth/facebook', passport.authenticate('facebook'));
+
+    router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        failureRedirect : '/'
+    } ), (req, res )=> {
+        res.redirect('/chatrooms');
+    });
+
+    router.get('/chatrooms',( req, res, next) => {
+        res.render('chatrooms', {title : 'Chatrooms', user:req.user});
     });
 
     router.get('/setcolor', (req, res, next) => {

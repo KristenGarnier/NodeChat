@@ -65,7 +65,10 @@ John.save((err) => {
     }
 });*/
 
-require('./routes/routes')(express, app);
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./routes/routes')(express, app, passport);
 require('./auth/passportAuth')(passport, FacebookStrategy, config, mongoose);
 app.listen(3000, ()=> {
     console.log('localhost:3000');

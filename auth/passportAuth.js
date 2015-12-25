@@ -2,7 +2,7 @@ module.exports = (passport, FacebookStrategy, config, mongoose) => {
 
     const chatUser = new mongoose.Schema({
         profileID: String,
-        fullName: String,
+        fullname: String,
         profilePic: String
     });
 
@@ -20,13 +20,16 @@ module.exports = (passport, FacebookStrategy, config, mongoose) => {
 
     const checkUser = id => {
         return new Promise(
-            User.findOne({'profileID': id}, (err, result) => {
-                if (!err) {
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            })
+            (resolve, reject) => {
+                User.findOne({'profileID': id}, (err, result) => {
+                    if (!err) {
+                        resolve(result);
+                    } else {
+                        reject(err);
+                    }
+                });
+            }
+
         );
     };
 
@@ -39,7 +42,7 @@ module.exports = (passport, FacebookStrategy, config, mongoose) => {
     };
 
     const saveUser = user => {
-        return user.save()
+        return user.save();
     };
 
     const sendUser = (user, done) => {
@@ -55,18 +58,15 @@ module.exports = (passport, FacebookStrategy, config, mongoose) => {
     }, (access, refresh, profile, done) => {
         checkUser(profile.id)
             .then((result) => {
-                if (result)
-                    sendUser();
-                else {
-                    const newUser = newUser(profile);
-                    saveUser(newUser)
-                        .then(() => {
-                            saveUser(newUser, done);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
+                if (result !== null){
+                    sendUser(result, done);
                 }
+                else {
+                    return saveUser(newUser(profile));
+                }
+            })
+            .then((created) => {
+                sendUser(created, done);
             })
             .catch((err) => {
                 console.log(err);
