@@ -1,6 +1,14 @@
 module.exports = (express, app, passport) => {
     const router = express.Router();
 
+    const securePages = (req, res, next) => {
+        if(req.isAuthenticated()){
+            next();
+        } else {
+            res.redirect('/');
+        }
+    };
+
     router.get('/',( req, res, next) => {
         res.render('index', {title : 'welcole to CHATCAT'});
     });
@@ -13,17 +21,13 @@ module.exports = (express, app, passport) => {
         res.redirect('/chatrooms');
     });
 
-    router.get('/chatrooms',( req, res, next) => {
+    router.get('/logout', (req, res, next) => {
+        req.logout();
+        res.redirect('/');
+    });
+
+    router.get('/chatrooms', securePages, ( req, res, next) => {
         res.render('chatrooms', {title : 'Chatrooms', user:req.user});
-    });
-
-    router.get('/setcolor', (req, res, next) => {
-        req.session.favColor = 'Red';
-        res.send('setting favorite color...');
-    });
-
-    router.get('/getcolor', (req, res, next) => {
-        res.send(`Favourite color : ${req.session.favColor === undefined ? 'Not Found' : req.session.favColor}`);
     });
 
     app.use('/', router);
